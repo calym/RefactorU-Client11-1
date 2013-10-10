@@ -1,4 +1,7 @@
 
+
+$(document).ready(function() {
+
 //name = string, calories = number, glutenFree = boolean, glutenFree = boolean
 function FoodItem(name, calories, vegan, glutenFree, citrusFree) {
 	 this.name = name;
@@ -6,9 +9,15 @@ function FoodItem(name, calories, vegan, glutenFree, citrusFree) {
 	 this.vegan = vegan;
 	 this.glutenFree = glutenFree;
 	 this.citrusFree = citrusFree;
+	 
+	 this.create = function() {
+	 	return $(".foods").append('<li> Food Items: '+this.name+'</li>');
+	 }
+	 
+
 	 }
 	 FoodItem.prototype.toString = function() {
-	 	return ("name: " + this.name +", calories: "+ this.calories +", vegan: " +this.vegan + ", gluten free: "+this.glutenFree +", citrus free: "+ this.citrusFree);
+	 	return (this.name + this.calories +this.vegan+this.glutenFree + this.citrusFree);
 	 } 
 
 
@@ -27,6 +36,9 @@ function Drink(name, description,items) {
 	this.name = name;
 	this.description = description;
 	this.items = items;
+	this.create = function() {
+	 	return $(".drinks").append('<li>'+this.name+'</li>');
+	 }
 }
 
 	Drink.prototype.toString = function() {
@@ -34,7 +46,7 @@ function Drink(name, description,items) {
 //		for(var i = 0;i<this.items.length;i++) {
 //			stringOut = stringOut + this.items[i].toString() + "\n  "; 
 //		}
-		return("name: " + this.name +", description: "+ this.description +", items: " +this.items)	
+		return(this.name +"<p>"+ this.description +"<p>" +this.items+ "<p>")	
 //		return stringOut;
 	}
 var margarita = new Drink("Margarita","The classic summer drink",[lime,tequila]);
@@ -76,48 +88,65 @@ function Plate(name, description, price, items) {
 			}
 		} console.log("citrus free!");
 			return true;
-	}				
+	}
+	this.create = function() {
+	 	return $(".plates").append('<li>Plates: '+this.name+'</li>');
+	 }
+
 
 }
 	Plate.prototype.toString = function() {
-		return("name: " + this.name +", description: "+ this.description + ", price: " +this.price+ ", items: " +this.items);
+		return(this.name +'<p>'+ this.description + '<p>' +this.price+ '<p> includes:'+this.items+'<p>');
 	}
 
-var burritoPlate = new Plate("Burrito","Super awesome!", 7, [tortilla,beans,cheese,cornchips]);
+var burritoPlate = new Plate("Burrito", "Super awesome!", 7, [tortilla,beans,cheese,cornchips]);
 var guacamolePlate = new Plate("Guacamole Plate","Who doesn't love avocados. Seriously.", 5, [avocado,lime,cornchips]);
 
 //plates = Array of plate objects - menu has some of the plates! Menu has ALL of the plates.
 function Menu(plates) { //could add a drinks parameter to pass and array of drink objects
 	this.name = name;
 	this.plates = plates;
+
+	this.create = function() {
+		return $(".menu").append('<li>'+this.plates+'</li>');
+	}
 }
 	Menu.prototype.toString = function() {
-		return( "name: " + this.name + " plates: " + this.plates);
+		return(this.name + this.plates);
 	}
 
 //plates = Array of plates?
 function Order(plates) {
 	this.plates = plates;
+
+	this.create = function() {
+	 	return $(".order").append('<li>"Order: "'+this.plates+'</li>');
+	 }
 }
 	Order.prototype.toString = function() {
-		return("plates: " + this.plates);
+		return(this.plates);
 	}
 
 	
 //var eatMe = new Menu([burritoPlate, guacamolePlate]);
-var eatMe = new Menu([burritoPlate,guacamolePlate, margarita]);
+var eatMe = new Menu([guacamolePlate, burritoPlate, margarita]);
 
 //name = string, description = string, menu = array of plates 
 function Restaurant(name, description, menu) {
 	this.name = name;
 	this.description = description;
 	this.menu = menu;
+	this.create = function() {
+	 	return $(".container").prepend('<h1>'+this.name+'</h1><div class = "description">'+ this.description+'</div>');
+	 }
+
+
 }	
 	Restaurant.prototype.toString = function() {
-		return("name: " + this.name +", description: "+ this.description + ", menu: " +this.menu)
+		return(this.name +"<p>"+ this.description + "<p>" +this.menu)
 	}
 
-var LittleT = new Restaurant("Little Tijuana", "Not a big menu but it's cheap!",eatMe);
+var LittleT = new Restaurant("Little Tijuana", "Not a big menu, but it's cheap!",eatMe);
 
 //dietaryPreference = types?
 function Customer(dietaryPreference) {
@@ -128,4 +157,13 @@ function Customer(dietaryPreference) {
 	}
 
 
-console.log(LittleT.toString());
+LittleT.create();
+eatMe.create();
+// console.log(LittleT.toString());
+// lime.create();
+// margarita.create();
+// burritoPlate.create();
+
+
+
+}); //closes document ready
